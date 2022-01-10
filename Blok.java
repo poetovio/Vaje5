@@ -7,24 +7,26 @@ public class Blok {
     public String data;
     public int indeks;
     public long datum;
-    private int zeton = 0;
-    public int tezavnost = 5;
+    public int zeton;
+    public int tezavnost;
 
-    public Blok(String data, String prevHash, int indeks) {
+    public Blok(String data, String prevHash, int indeks, int tezavnost, int zeton) {
         this.data = data;
         this.hash = izracunajHash();
         this.prevHash = prevHash;
         this.indeks = indeks;
+        this.tezavnost = tezavnost;
+        this.zeton = zeton;
         this.datum = new Date().getTime();
     }
 
     public String izracunajHash() {
-        String koda = hash(String.valueOf(indeks) + Long.toString(datum) + Integer.toString(zeton) + data + prevHash);
+        String koda = hash(String.valueOf(indeks) + Long.toString(datum) + Integer.toString(zeton) + data + prevHash + tezavnost);
         return koda;
     }
 
-    public static String vrniHash(int indeks, long datum, String data, String prevHash) {
-        String koda = hash(String.valueOf(indeks) + Long.toString(datum) + data + prevHash);
+    public static String vrniHash(int indeks, long datum, int zeton, String data, String prevHash, int tezavnost) {
+        String koda = hash(String.valueOf(indeks) + Long.toString(datum) + Integer.toString(zeton) + data + prevHash + tezavnost);
         return koda;
     }
 
