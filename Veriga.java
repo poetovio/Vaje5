@@ -26,11 +26,17 @@ public class Veriga {
             zdajsnji = blockchain.get(i);
             prejsnji = blockchain.get(i - 1);
 
-            if(!((zdajsnji.indeks - 1) == prejsnji.indeks) || !((zdajsnji.prevHash).equals(prejsnji.hash)) /* || !((zdajsnji.hash).equals(Blok.vrniHash(zdajsnji.indeks, zdajsnji.datum, 0 , zdajsnji.data, zdajsnji.prevHash, zdajsnji.tezavnost))) */) {
+            if(!((zdajsnji.indeks - 1) == prejsnji.indeks) || !((zdajsnji.prevHash).equals(prejsnji.hash)) || !((zdajsnji.hash).equals(Blok.vrniHash(zdajsnji.indeks, zdajsnji.datum, zdajsnji.glavniZeton , zdajsnji.data, zdajsnji.prevHash, zdajsnji.tezavnost)))) {
                 return false;
             }
         }
 
         return true;
+    }
+
+    public static int izracunajTezavnost(Blok prejsnjiBlok, Blok zdajsnjiBlok) {
+
+
+        return 0;
     }
 }
