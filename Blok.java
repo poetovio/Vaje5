@@ -8,6 +8,7 @@ public class Blok {
     public int indeks;
     public long datum;
     public int tezavnost;
+    public int glavniZeton;
 
     public Blok(String data, String prevHash, int indeks, int tezavnost) {
         this.data = data;
@@ -15,6 +16,7 @@ public class Blok {
         this.prevHash = prevHash;
         this.indeks = indeks;
         this.tezavnost = tezavnost;
+        this.glavniZeton = 0;
         this.datum = new Date().getTime();
     }
 
@@ -50,19 +52,24 @@ public class Blok {
         }
     }
 
-    public void rudari(int tezavnost) {
+    public static void rudari(Blok blok, int tezavnost) {
         String vrednost = new String(new char[tezavnost]).replace('\0', '0');
 
         int zeton = 0;
 
         while(true) {
-            if(hash.substring(0, tezavnost).equals(vrednost)) {
-                System.out.println("Blok najden! ~ " + hash);
+            if(blok.hash.substring(0, tezavnost).equals(vrednost)) {
+                System.out.println("Blok najden! ~ " + blok.hash);
+                blok.glavniZeton = zeton;
                 break;
             } else {
                 zeton++;
-                hash = izracunajHash(zeton);
+                blok.hash = vrniHash(blok.indeks, blok.datum, zeton, blok.data, blok.prevHash, blok.tezavnost);
             }
         }
+    }
+
+    public int vrniZeton() {
+        return glavniZeton;
     }
 }
