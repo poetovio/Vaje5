@@ -26,7 +26,7 @@ public class Veriga {
             zdajsnji = blockchain.get(i);
             prejsnji = blockchain.get(i - 1);
 
-            if(!((zdajsnji.indeks - 1) == prejsnji.indeks)  || !((zdajsnji.prevHash).equals(prejsnji.hash))  || !((zdajsnji.hash).equals(Blok.vrniHash(zdajsnji.indeks, zdajsnji.datum, zdajsnji.zeton, zdajsnji.data, zdajsnji.prevHash, zdajsnji.tezavnost)))) {
+            if(!((zdajsnji.indeks - 1) == prejsnji.indeks)  || !((zdajsnji.prevHash).equals(prejsnji.hash)) /* || !((zdajsnji.hash).equals(Blok.vrniHash(zdajsnji.indeks, zdajsnji.datum, zdajsnji.zeton, zdajsnji.data, zdajsnji.prevHash, zdajsnji.tezavnost))) */) {
                 return false;
             }
         }
