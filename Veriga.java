@@ -1,5 +1,6 @@
 import java.util.*;
 import java.awt.event.*;
+import java.io.DataInputStream;
 import java.net.*;
 import java.util.concurrent.TimeUnit;
 
@@ -9,9 +10,12 @@ public class Veriga {
     public static int zeton = 0;
     public static long generiranjeBlokov = 5000;
     public static long pricakovaniCas = generiranjeBlokov * tezavnost;
+    public static ServerSocket serverSocket;
     public static Socket socket;
+    public static ArrayList<Socket> povezave = new ArrayList<Socket>();
     public static int port = randomPort();
     public static boolean bulean = true;
+    public static DataInputStream input;
 
     public static void main(String[] args) {
         Gui gui = new Gui();
@@ -19,8 +23,15 @@ public class Veriga {
         gui.gumbPort.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                int port = Integer.parseInt(gui.port.getText());
-                System.out.println(port);
+                try {
+                    int novPort = Integer.parseInt(gui.port.getText());
+                    Socket novSocket = new Socket("localhost", novPort);
+                    gui.ukazi.append("Povezan na port: " + novPort + '\n');
+                    povezave.add(novSocket);
+                } catch (Exception error) {
+                    error.printStackTrace(System.err);
+                    System.err.println(error);
+                }
             }
         });
 
@@ -28,7 +39,7 @@ public class Veriga {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    socket = new Socket("localhost", port);
+                    serverSocket = new ServerSocket(port);
                     gui.ukazi.append("Socket kreiran na portu: " + port + '\n');
                 } catch(Exception error) {
                     error.printStackTrace(System.err);
@@ -55,7 +66,7 @@ public class Veriga {
             }
         }
 
-        rudarjenje(gui);
+        rudarjenje(gui, povezave);
         /*
 
         blockchain.add(new Blok("Prvi blok", "0", 0, tezavnost));
@@ -123,7 +134,7 @@ public class Veriga {
         return ((random.nextInt(2) + 1) * 10000 + random.nextInt(10000));
     }
 
-    public static void rudarjenje(Gui gui) {
+    public static void rudarjenje(Gui gui, ArrayList<Socket> sockets) {
         int stevec = 1;
         while(true) {
             blockchain.add(new Blok("Blok" + Integer.valueOf(stevec + 1), blockchain.get(blockchain.size() - 1).hash, stevec, tezavnost));
@@ -134,9 +145,18 @@ public class Veriga {
                 Date d2 = new Date(blockchain.get(blockchain.size() - 1).datum);
                 tezavnost += izracunajTezavnost(d2.getTime() - d1.getTime());
                 stevec++;
+                gui.ukazi.append("Kumulativna tezavnost: " + kumulativnaTezavnost() + '\n');
             } else {
                 blockchain.remove(blockchain.size() - 1);
             }
         }
+    }
+
+    public static int kumulativnaTezavnost() {
+        int sestevek = 0;
+        for(Blok block: blockchain) {
+            sestevek += Math.pow(2, block.tezavnost);
+        }
+        return sestevek;
     }
 }

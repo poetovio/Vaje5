@@ -17,7 +17,7 @@ public class Gui {
     public Gui() {
         frame = new JFrame("Blockchain");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(600, 400);
+        frame.setSize(800, 400);
 
         opravilnaVrstica = new JPanel();
         JLabel labelPort = new JLabel("Port: ");
@@ -38,7 +38,7 @@ public class Gui {
         sredina.add(scroll);
 
         command = new JPanel();
-        command.setPreferredSize(new Dimension(100, 300));
+        command.setPreferredSize(new Dimension(250, 300));
         command.setBackground(new Color(176, 224, 230));
         JLabel ukazVrstica = new JLabel("Ukazi:");
         ukazi = new JTextArea();
@@ -58,10 +58,6 @@ public class Gui {
         vnosnoPolje.append(text);
         frame.validate();
         frame.repaint();
-    }
-
-    public static void main(String[] args) {
-        Gui gui = new Gui();
     }
 }
 
