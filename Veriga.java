@@ -8,11 +8,13 @@ public class Veriga {
     public static long pricakovaniCas = generiranjeBlokov * tezavnost;
 
     public static void main(String[] args) {
+        Gui gui = new Gui();
+
         blockchain.add(new Blok("Prvi blok", "0", 0, tezavnost));
-        Blok.rudari(blockchain.get(0), tezavnost);        
+        Blok.rudari(blockchain.get(0), tezavnost, gui);        
 
         blockchain.add(new Blok("Drugi blok", blockchain.get(blockchain.size() - 1).hash, 1, tezavnost));
-        Blok.rudari(blockchain.get(1), tezavnost);
+        Blok.rudari(blockchain.get(1), tezavnost, gui);
 
         Date d1 = new Date(blockchain.get(0).datum);
         Date d2 = new Date(blockchain.get(1).datum);
@@ -20,7 +22,7 @@ public class Veriga {
         System.out.println("Tezavnost: " + tezavnost);
 
         blockchain.add(new Blok("Tretji blok", blockchain.get(blockchain.size() - 1).hash, 2, tezavnost));
-        Blok.rudari(blockchain.get(2), tezavnost);
+        Blok.rudari(blockchain.get(2), tezavnost, gui);
 
         for(Blok blok: blockchain) {
             Date date = new Date(blok.datum);

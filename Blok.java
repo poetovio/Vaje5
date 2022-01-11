@@ -1,4 +1,3 @@
-import java.util.Date;
 import java.security.MessageDigest;
 
 public class Blok {
@@ -8,7 +7,7 @@ public class Blok {
     public int indeks;
     public long datum;
     public int tezavnost;
-    public int glavniZeton;
+    public long glavniZeton;
 
     public Blok(String data, String prevHash, int indeks, int tezavnost) {
         this.data = data;
@@ -25,8 +24,8 @@ public class Blok {
         return koda;
     }
 
-    public static String vrniHash(int indeks, long datum, int zeton, String data, String prevHash, int tezavnost) {
-        String koda = hash(String.valueOf(indeks) + Long.toString(datum) + Integer.toString(zeton) + data + prevHash + tezavnost);
+    public static String vrniHash(int indeks, long datum, long zeton, String data, String prevHash, int tezavnost) {
+        String koda = hash(String.valueOf(indeks) + Long.toString(datum) + Long.toString(zeton) + data + prevHash + tezavnost);
         return koda;
     }
 
@@ -52,14 +51,17 @@ public class Blok {
         }
     }
 
-    public static void rudari(Blok blok, int tezavnost) {
+    public static void rudari(Blok blok, int tezavnost, Gui gui) {
         String vrednost = new String(new char[tezavnost]).replace('\0', '0');
 
-        int zeton = 0;
+        long zeton = 0;
 
         while(true) {
             if(blok.hash.substring(0, tezavnost).equals(vrednost)) {
                 blok.glavniZeton = zeton;
+                gui.vnosnoPolje.append("Najden blok: " + blok.hash + '\n');
+                gui.frame.validate();
+                gui.frame.repaint();
                 System.out.println("Blok najden! ~ " + blok.hash);
                 break;
             } else {
@@ -69,7 +71,7 @@ public class Blok {
         }
     }
 
-    public int vrniZeton() {
+    public long vrniZeton() {
         return glavniZeton;
     }
 }
