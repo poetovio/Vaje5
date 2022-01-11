@@ -17,7 +17,7 @@ public class Blok {
         this.indeks = indeks;
         this.tezavnost = tezavnost;
         this.glavniZeton = 0;
-        this.datum = new Date().getTime();
+        this.datum = System.currentTimeMillis();
     }
 
     public String izracunajHash() {
@@ -59,7 +59,6 @@ public class Blok {
 
         while(true) {
             if(blok.hash.substring(0, tezavnost).equals(vrednost)) {
-                System.out.println("Blok najden! ~ " + blok.hash);
                 blok.glavniZeton = zeton;
                 break;
             } else {
