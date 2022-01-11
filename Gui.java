@@ -4,12 +4,15 @@ import java.awt.*;
 public class Gui {
     public JFrame frame;
     public static JPanel opravilnaVrstica;
-    public static JTextField port;
+    public JTextField port;
     public JTextArea vnosnoPolje;
     public static JPanel sredina;
-    public static JButton gumbPort;
+    public JButton gumbPort;
     public static JPanel command;
-    public static JTextArea ukazi;
+    public JTextArea ukazi;
+    public JButton gumbKreiranjePorta;
+    public JButton mine;
+    public JScrollPane scroll;
 
     public Gui() {
         frame = new JFrame("Blockchain");
@@ -19,15 +22,20 @@ public class Gui {
         opravilnaVrstica = new JPanel();
         JLabel labelPort = new JLabel("Port: ");
         port = new JTextField(15);
-        gumbPort = new JButton("Povezi se");
+        gumbPort = new JButton("Connect");
+        gumbKreiranjePorta = new JButton("Port");
+        mine = new JButton("Mine");
         opravilnaVrstica.add(labelPort);
         opravilnaVrstica.add(port);
         opravilnaVrstica.add(gumbPort);
+        opravilnaVrstica.add(gumbKreiranjePorta);
+        opravilnaVrstica.add(mine);
 
         sredina = new JPanel();
         sredina.setLayout(new BoxLayout(sredina, BoxLayout.Y_AXIS));
         vnosnoPolje = new JTextArea();
-        sredina.add(vnosnoPolje);
+        scroll = new JScrollPane(vnosnoPolje, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        sredina.add(scroll);
 
         command = new JPanel();
         command.setPreferredSize(new Dimension(100, 300));
@@ -44,6 +52,12 @@ public class Gui {
         frame.getContentPane().add(BorderLayout.EAST, command);
 
         frame.setVisible(true);
+    }
+
+    public void izpisi(String text) {
+        vnosnoPolje.append(text);
+        frame.validate();
+        frame.repaint();
     }
 
     public static void main(String[] args) {
