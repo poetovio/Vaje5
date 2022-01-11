@@ -60,6 +60,7 @@ public class Blok {
         while(true) {
             if(blok.hash.substring(0, tezavnost).equals(vrednost)) {
                 blok.glavniZeton = zeton;
+                System.out.println("Blok najden! ~ " + blok.hash);
                 break;
             } else {
                 zeton++;
