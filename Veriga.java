@@ -8,8 +8,9 @@ public class Veriga {
     public static ArrayList<Blok> blockchain = new ArrayList<Blok>();
     public static int tezavnost = 5;
     public static int zeton = 0;
-    public static long generiranjeBlokov = 5000;
-    public static long pricakovaniCas = generiranjeBlokov * tezavnost;
+    private static int steviloSpremenitveBlokov = 4;
+    public static long generiranjeBlokov = 2000;
+    public static long pricakovaniCas = generiranjeBlokov * steviloSpremenitveBlokov;
     public static ServerSocket serverSocket;
     public static Socket socket;
     public static ArrayList<Socket> povezave = new ArrayList<Socket>();
@@ -137,17 +138,20 @@ public class Veriga {
     public static void rudarjenje(Gui gui, ArrayList<Socket> sockets) {
         int stevec = 1;
         while(true) {
-            blockchain.add(new Blok("Blok" + Integer.valueOf(stevec + 1), blockchain.get(blockchain.size() - 1).hash, stevec, tezavnost));
-            Blok.rudari(blockchain.get(blockchain.size() - 1), tezavnost, gui);
+            for(int i = 0; i < steviloSpremenitveBlokov; i++) {
+                blockchain.add(new Blok("Blok" + Integer.valueOf(stevec + 1), blockchain.get(blockchain.size() - 1).hash, stevec, tezavnost));
+                Blok.rudari(blockchain.get(blockchain.size() - 1), tezavnost, gui);
+                stevec++;
+            }
 
             if(preveritev()) {
-                Date d1 = new Date(blockchain.get(blockchain.size() - 2).datum);
+                Date d1 = new Date(blockchain.get(blockchain.size() - 1 - steviloSpremenitveBlokov).datum);
                 Date d2 = new Date(blockchain.get(blockchain.size() - 1).datum);
                 tezavnost += izracunajTezavnost(d2.getTime() - d1.getTime());
-                stevec++;
-                gui.ukazi.append("Kumulativna tezavnost: " + kumulativnaTezavnost() + '\n');
+                gui.ukazi.append("Tezavnost: " + tezavnost + '\n');
             } else {
                 blockchain.remove(blockchain.size() - 1);
+                System.out.println("Error!");
             }
         }
     }
@@ -158,5 +162,12 @@ public class Veriga {
             sestevek += Math.pow(2, block.tezavnost);
         }
         return sestevek;
+    }
+
+    public static boolean casovnaValidacija(long cas) {
+        if(cas < 60000) {
+            return true;
+        }
+        return false;
     }
 }
